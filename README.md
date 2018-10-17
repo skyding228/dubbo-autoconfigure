@@ -3,6 +3,15 @@ register dubbo reference or service to Spring automatically.
 
 This plugin can generate dubbo configuration file automatically base on a freemarker template which you can tell it how to do.
 
+## Maven dependency
+```xml
+<dependency>
+    <groupId>com.github.skyding228</groupId>
+    <artifactId>dubbo-autoconfigure</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
 ## Core class
 `DubboPostProcessor` has three required properties.
 

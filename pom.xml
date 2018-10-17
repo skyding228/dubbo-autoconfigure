@@ -4,10 +4,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.skyding.dubbo</groupId>
-    <artifactId>autoconfigure</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.github.skyding228</groupId>
+    <artifactId>dubbo-autoconfigure</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
+    <scm>
+        <url>https://github.com/skyding228/dubbo-autoconfigure</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>skyding</name>
+            <email>1329555958@qq.com</email>
+            <url>https://github.com/skyding228</url>
+        </developer>
+    </developers>
     <properties>
         <maven.test.skip>true</maven.test.skip>
         <spring-framework.version>4.1.4.RELEASE</spring-framework.version>
@@ -34,5 +53,17 @@
             <version>2.3.28</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>MavenCentral</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>MavenCentral</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
 
 </project>
