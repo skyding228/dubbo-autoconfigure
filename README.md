@@ -7,13 +7,16 @@ This plugin can generate dubbo configuration file automatically base on a freema
 `DubboPostProcessor` has three required properties.
 
 - freemarkerRelativePath
+
 the freemarker template path relative to classpath.You can access all the interfaces that need to be registered to Spring through `interfaces`.
 The `interfaces` is a `ArrayList<Class>`.
 
 - interfacePackages
+
 where to scan interfaces ,use comma to split multiple packages.  Notice: It will NOT scan the subpackages.
 
 - serviceSide
+
 It's `Boolean` type. you should set `true` when configured in service side ,false in consumer side.
 
 ## Configure dubbo reference side
@@ -32,6 +35,7 @@ It's `Boolean` type. you should set `true` when configured in service side ,fals
 </beans>  
 ```
 - configure a bean in Spring
+
 Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and your freemarker template is `dubbo-reference-simple.ftl`.
 ```xml
 	<bean class="com.skyding.dubbo.autoconfigure.DubboPostProcessor">
@@ -58,6 +62,7 @@ Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and 
 </beans>  
 ```
 - configure a bean in Spring
+
 Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and your freemarker template is `dubbo-service-simple.ftl`.
 ```xml
 	<bean class="com.skyding.dubbo.autoconfigure.DubboPostProcessor">
