@@ -29,8 +29,8 @@ where to scan interfaces ,use comma to split multiple packages.  Notice: It will
 It's `Boolean` type. you should set `true` when configured in service side ,false in consumer side.
 
 ## Configure dubbo reference side
-- new a freemarker template file
-```ftl
+- The jar has a default freemarker template file
+```dubbo-reference-simple.ftl
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
@@ -43,7 +43,7 @@ It's `Boolean` type. you should set `true` when configured in service side ,fals
 	</#list>
 </beans>  
 ```
-- configure a bean in Spring
+- Configure a bean in Spring
 
 Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and your freemarker template is `dubbo-reference-simple.ftl`.
 ```xml
@@ -55,8 +55,8 @@ Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and 
 ```
 
 ## Configure dubbo service side
-- new a freemarker template file
-```ftl
+- The jar has a default freemarker template file
+```dubbo-service-simple.ftl
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
@@ -70,7 +70,7 @@ Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and 
 
 </beans>  
 ```
-- configure a bean in Spring
+- Configure a bean in Spring
 
 Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and your freemarker template is `dubbo-service-simple.ftl`.
 ```xml
