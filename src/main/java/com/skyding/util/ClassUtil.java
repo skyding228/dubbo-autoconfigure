@@ -14,60 +14,12 @@ import java.util.jar.JarFile;
 
 public class ClassUtil {
 
-
-    /**
-     * 通过接口名取得某个接口下所有实现这个接口的类
-     */
-    public static List<Class<?>> getAllClassByInterface(Class<?> c) {
-        List<Class<?>> returnClassList = null;
-
-        if (c.isInterface()) {
-            // 获取当前的包名
-            String packageName = c.getPackage().getName();
-            // 获取当前包下以及子包下所以的类
-            List<Class<?>> allClass = getClasses(packageName,true);
-            if (allClass != null) {
-                returnClassList = new ArrayList<Class<?>>();
-                for (Class<?> cls : allClass) {
-                    // 判断是否是同一个接口
-                    if (c.isAssignableFrom(cls)) {
-                        // 本身不加入进去
-                        if (!c.equals(cls)) {
-                            returnClassList.add(cls);
-                        }
-                    }
-                }
-            }
-        }
-
-        return returnClassList;
-    }
-
-    /**
-     * 取得某一类所在包的所有类名 不含迭代
-     */
-    public static String[] getPackageAllClassName(String classLocation, String packageName) {
-        // 将packageName分解
-        String[] packagePathSplit = packageName.split("[.]");
-        String realClassLocation = classLocation;
-        int packageLength = packagePathSplit.length;
-        for (int i = 0; i < packageLength; i++) {
-            realClassLocation = realClassLocation + File.separator + packagePathSplit[i];
-        }
-        File packeageDir = new File(realClassLocation);
-        if (packeageDir.isDirectory()) {
-            String[] allClassName = packeageDir.list();
-            return allClassName;
-        }
-        return null;
-    }
-
     /**
      * 从包package中获取所有的Class
      *
-     * @param packageName
+     * @param packageName full qualified name
      * @param recursive 是否循环迭代
-     * @return
+     * @return all classes in this {@code packageName}
      */
     public static List<Class<?>> getClasses(String packageName,boolean recursive) {
 

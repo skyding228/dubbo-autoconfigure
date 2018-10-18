@@ -92,9 +92,9 @@ public class DubboPostProcessor implements BeanDefinitionRegistryPostProcessor {
     /**
      * filter the interfaces which need to be registered into Spring container
      *
-     * @param interfaces
-     * @param beanFactory
-     * @return
+     * @param interfaces all interfaces
+     * @param beanFactory  spring beanFactory
+     * @return filtered interfaces
      */
     protected List<Class> filterInterfaces(List<Class<?>> interfaces, ConfigurableListableBeanFactory beanFactory) {
         List<Class> needToRegisters = new ArrayList<>();
@@ -122,8 +122,8 @@ public class DubboPostProcessor implements BeanDefinitionRegistryPostProcessor {
      * generate BeanDefinition for {@code interfaces} argument base on the {@code freemarkerRelativePath} property,
      * and then register to Spring container
      *
-     * @param registry
-     * @param interfaces
+     * @param registry registry
+     * @param interfaces the interfaces need to be registered
      */
     protected void registerBean(BeanDefinitionRegistry registry, List<Class> interfaces) {
         LOG.info("dubbo start to register for {} automatically", interfaces);
