@@ -6,7 +6,6 @@
     http://code.alibabatech.com/schema/dubbo          
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<#list interfaces as inf>
-    <dubbo:service interface="${inf.name}" version="1.0" ref="${inf.simpleName?uncap_first}Impl" timeout="15000"/>
+    <dubbo:service interface="${inf.clazz.name}" version="1.0" ref="${inf.ref}" timeout="15000"/>
     </#list>
-
-</beans>  
+</beans>

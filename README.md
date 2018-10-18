@@ -18,7 +18,7 @@ This plugin can generate dubbo configuration file automatically base on a freema
 - freemarkerRelativePath
 
 the freemarker template path relative to classpath.You can access all the interfaces that need to be registered to Spring through `interfaces`.
-The `interfaces` is a `ArrayList<Class>`.
+The `interfaces` is a `ArrayList<InterfaceInfo>`,more details at `com.skyding.dubbo.autoconfigure.InterfaceInfo`.
 
 - interfacePackages
 
@@ -39,9 +39,9 @@ It's `Boolean` type. you should set `true` when configured in service side ,fals
     http://code.alibabatech.com/schema/dubbo          
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<#list interfaces as inf>
-    <dubbo:reference interface="${inf.name}" version="1.0" id="${inf.simpleName?uncap_first}"/>
+    <dubbo:reference interface="${inf.clazz.name}" version="1.0" id="${inf.clazz.simpleName?uncap_first}" timeout="15000"/>
 	</#list>
-</beans>  
+</beans> 
 ```
 - Configure a bean in Spring
 
@@ -65,9 +65,8 @@ Assume your interfaces which you want to expose locate in `com.zx.sms.dao`, and 
     http://code.alibabatech.com/schema/dubbo          
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<#list interfaces as inf>
-    <dubbo:service interface="${inf.name}" version="1.0" ref="${inf.simpleName?uncap_first}Impl" timeout="15000"/>
+    <dubbo:service interface="${inf.clazz.name}" version="1.0" ref="${inf.ref}" timeout="15000"/>
     </#list>
-
 </beans>  
 ```
 - Configure a bean in Spring
