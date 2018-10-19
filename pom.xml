@@ -6,7 +6,7 @@
 
     <groupId>com.github.skyding228</groupId>
     <artifactId>dubbo-autoconfigure</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
     <name>dubbo-autoconfigure</name>
     <description>A Spring plugin for dubbo</description>
@@ -60,8 +60,73 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.28</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.4</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-codec</artifactId>
+                    <groupId>commons-codec</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-web</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-aop</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-expression</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>curator-framework</artifactId>
+                    <groupId>org.apache.curator</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>curator-client</artifactId>
+                    <groupId>org.apache.curator</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
     <distributionManagement>
         <snapshotRepository>
             <id>MavenCentral</id>

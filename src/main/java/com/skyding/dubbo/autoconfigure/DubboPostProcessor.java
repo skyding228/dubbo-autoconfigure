@@ -1,26 +1,24 @@
 package com.skyding.dubbo.autoconfigure;
 
+import com.alibaba.dubbo.config.spring.ServiceBean;
 import com.skyding.util.ClassUtil;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * to register dubbo reference or service automatically
@@ -62,6 +60,13 @@ public class DubboPostProcessor implements BeanDefinitionRegistryPostProcessor {
      * so you refer to the Bean in spring.
      */
     private Map<String, String> interfaceRefMap = new HashMap<>();
+
+    /**
+     * It's used to store has manually already registered interfaces which will be excluded while automatically registering .
+     * <p>
+     * Notice: effective only in serviceSide.
+     */
+    private Set<String> registeredServiceInterfaceNames = new HashSet<String>();
 
     /**
      * Modify the application context's internal bean definition registry after its
@@ -106,22 +111,23 @@ public class DubboPostProcessor implements BeanDefinitionRegistryPostProcessor {
      */
     protected List<InterfaceInfo> filterInterfaces(List<Class<?>> interfaces, ConfigurableListableBeanFactory beanFactory) {
         List<InterfaceInfo> needToRegisters = new ArrayList<>();
+        storeRegisteredServiceInterfaces(beanFactory);
         for (Class<?> clazz : interfaces) {
             if (!clazz.isInterface()) {
                 continue;
             }
             if (isServiceSide()) {
-                try {
-                    beanFactory.getBeanDefinition(clazz.getName());
-                } catch (NoSuchBeanDefinitionException e) {
-                    InterfaceInfo interfaceInfo = new InterfaceInfo(clazz);
-                    String[] refs = beanFactory.getBeanNamesForType(clazz);
-                    if (refs == null || refs.length > 1) {
-                        LOG.warn("There are more or less one Refer,It can't make a decision automatically. {}", refs);
-                    } else {
-                        interfaceInfo.setRef(refs[0]);
-                        needToRegisters.add(interfaceInfo);
-                    }
+                if (registeredServiceInterfaceNames.contains(clazz.getName())) {
+                    continue;
+                }
+                InterfaceInfo interfaceInfo = new InterfaceInfo(clazz);
+                String[] refs = beanFactory.getBeanNamesForType(clazz);
+                if (refs.length != 1) {
+                    LOG.warn("{} has {} refers.{}", clazz.getName(), refs.length, refs);
+                    throw new RuntimeException(clazz.getName() + "has " + refs.length + " Refer.");
+                } else {
+                    interfaceInfo.setRef(refs[0]);
+                    needToRegisters.add(interfaceInfo);
                 }
             } else {
                 String[] beanNames = beanFactory.getBeanNamesForType(clazz);
@@ -131,6 +137,23 @@ public class DubboPostProcessor implements BeanDefinitionRegistryPostProcessor {
             }
         }
         return needToRegisters;
+    }
+
+    /**
+     * store has manually already registered interfaces to {@code registeredServiceInterfaceNames} property.
+     *
+     * @param beanFactory beanFactory
+     */
+    private void storeRegisteredServiceInterfaces(ConfigurableListableBeanFactory beanFactory) {
+        if (!isServiceSide()) {
+            return;
+        }
+        String[] beanNames = beanFactory.getBeanNamesForType(ServiceBean.class);
+        for (String beanName : beanNames) {
+            RootBeanDefinition beanDefinition = (RootBeanDefinition) beanFactory.getBeanDefinition(beanName);
+            String interfaceName = beanDefinition.getPropertyValues().getPropertyValue("interface").getValue().toString();
+            registeredServiceInterfaceNames.add(interfaceName);
+        }
     }
 
     /**
